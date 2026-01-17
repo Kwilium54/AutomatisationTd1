@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Service PHP/Apache
+  php-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: immo-api-php
+    ports:
+      - "${SERVER_PORT}:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_PORT=${MYSQL_PORT}
+    depends_on:
+      - mysql
+    networks:
+      - immo-network
+
+  # Service MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: immo-mysql
+    restart: unless-stopped
+    ports:
+      - "${MYSQL_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - immo-network
+
+networks:
+  immo-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
