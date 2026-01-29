@@ -25,7 +25,7 @@ import { ref } from 'vue';
 import { FwbCarousel, FwbBadge } from 'flowbite-vue'
 import type { Property } from '../types';
 import { useRoute } from "vue-router";
-import { PictureItem } from 'flowbite-vue/components/FwbCarousel/types.js';
+import type { PictureItem } from 'flowbite-vue/components/FwbCarousel/types';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 
